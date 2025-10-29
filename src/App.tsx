@@ -94,7 +94,13 @@ const RoadmapCheckup = () => {
     requestType: '',
     specialistType: ''
   });
-
+// Функція визначення вікового діапазону
+  const getAgeRange = (age: number): string => {
+    if (age < 30) return '18-30';
+    if (age < 40) return '30-40';
+    if (age < 50) return '40-50';
+    return '50+';
+  };
   // 2. HELPER FUNCTIONS (правильний порядок)
   
   // Логіка вибору програми
@@ -796,9 +802,9 @@ try {
         </div>
 
         <div>
-          <label className="block text-lg font-semibold text-gray-800 mb-4">
-            Ваш вік: <span className="text-blue-600 font-bold text-xl">{quizData.age} років</span>
-          </label>
+<label className="block text-lg font-semibold text-gray-800 mb-4">
+  Ваш вік: <span className="text-blue-600 font-bold text-xl">{getAgeRange(quizData.age)} років</span>
+</label>
           
           <div className="relative hidden md:block">
             <input
@@ -820,23 +826,23 @@ try {
 
           <div className="grid grid-cols-2 gap-3 md:hidden">
             {[
-              { range: '18-30', value: 25, label: '18-30' },
-              { range: '30-40', value: 35, label: '30-40' },
-              { range: '40-50', value: 45, label: '40-50' },
-              { range: '50+', value: 55, label: '50+' }
-            ].map((ageGroup) => (
-              <button
-                key={ageGroup.range}
-                onClick={() => setQuizData({...quizData, age: ageGroup.value})}
-                className={`p-3 rounded-xl border-2 transition-all duration-300 text-center ${
-                  Math.abs(quizData.age - ageGroup.value) <= 5
-                    ? 'border-blue-500 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="font-semibold text-sm">{ageGroup.label}</div>
-              </button>
-            ))}
+  { range: '18-30', value: 25, label: '18-30 років' },
+  { range: '30-40', value: 35, label: '30-40 років' },
+  { range: '40-50', value: 45, label: '40-50 років' },
+  { range: '50+', value: 55, label: '50+ років' }
+].map((ageGroup) => (
+  <button
+    key={ageGroup.range}
+    onClick={() => setQuizData({...quizData, age: ageGroup.value})}
+    className={`p-3 rounded-xl border-2 transition-all duration-300 text-center ${
+      getAgeRange(quizData.age) === ageGroup.range
+        ? 'border-blue-500 bg-blue-50 text-blue-700'
+        : 'border-gray-200 hover:border-gray-300'
+    }`}
+  >
+    <div className="font-semibold text-sm">{ageGroup.label}</div>
+  </button>
+))}
           </div>
         </div>
       </div>
