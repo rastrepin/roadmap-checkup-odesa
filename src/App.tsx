@@ -807,7 +807,7 @@ try {
               max="80"
               value={quizData.age}
               onChange={(e) => setQuizData({...quizData, age: parseInt(e.target.value)})}
-              className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer touch-slider"
               style={{
                 background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((quizData.age - 18) / 62) * 100}%, #e5e7eb ${((quizData.age - 18) / 62) * 100}%, #e5e7eb 100%)`
               }}
@@ -883,7 +883,7 @@ try {
     
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-scroll">
           <div className="p-6 md:p-8">
             <div className="flex justify-between items-start mb-6">
               <div>
