@@ -1,24 +1,25 @@
 export interface QuizData {
   gender: 'male' | 'female' | '';
-  age: string;
-  examinationType: 'full' | 'regular' | '';
-}
-
-export interface ClinicPrice {
-  clinic: string;
-  fullExamPrice: number;
-  regularExamPrice: number;
-  contact: {
-    phone: string;
-    email: string;
-    address: string;
-  };
-}
-
-export interface ContactFormData {
+  age: number;
+  examType: 'full' | 'regular' | 'individual' | '';
   name: string;
-  email: string;
   phone: string;
-  message: string;
-  selectedClinic: string;
+  email: string;
+  preferredClinic: string;
+  preferredDate1: string;
+  preferredDate2: string;
+  comments: string;
+  requestType: string;
+  specialistType: string;
+}
+
+export interface LeadData {
+  name: string;
+  phone: string;
+  email: string;
+  program: string;
+  preferredClinic: string;
+  priceOnClinic: number;
+  priceSanaVita: number;
+  timestamp: string;
 }

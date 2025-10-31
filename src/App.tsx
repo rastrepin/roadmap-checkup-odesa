@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, Heart, Activity, Users, MapPin, Phone, Clock, CheckCircle2, Star, AlertCircle, Send, Loader2 } from 'lucide-react';
+import Step2 from './components/Step2';
 
 // API конфігурація з реальними даними
 const SHEET_ID = '1nZHWVu9pILQEFtZezgakZglzOlFF3a0G5VczH9o4TSE';
@@ -948,7 +949,7 @@ try {
               </div>
             )}
 
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-3">
               <button
                 onClick={() => {
                   setQuizData({...quizData, examType: showProgramDetails});
@@ -973,207 +974,19 @@ try {
   };
 
 const renderStep2 = () => {
-  // Отримуємо характеристики для обраної статі та віку
-  const fullSpecs = quizData.gender ? getProgramSpecs(quizData.gender, quizData.age, 'full') : null;
-  const regularSpecs = quizData.gender ? getProgramSpecs(quizData.gender, quizData.age, 'regular') : null;
-
   return (
-    <div className="space-y-6 md:space-y-8">
-      <div className="text-center">
-        <div className="mx-auto w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-teal-600 to-green-600 rounded-2xl flex items-center justify-center mb-4 md:mb-6 shadow-lg">
-          <Activity className="w-8 h-8 md:w-10 md:h-10 text-white" />
-        </div>
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 md:mb-3">Тип обстеження</h2>
-        <p className="text-gray-600 text-base md:text-lg px-4 md:px-0">Оберіть програму яка найкраще відповідає вашим потребам</p>
-      </div>
-
-      <div className="space-y-4">
-        {[
-          {
-            value: 'full',
-            title: 'Повне обстеження',
-            description: 'Комплексна перевірка всіх основних систем організму',
-            specs: fullSpecs,
-            icon: <Heart className="w-6 h-6 md:w-8 md:h-8" />,
-            popular: true
-          },
-          {
-            value: 'regular',
-            title: 'Регулярне обстеження',
-            description: 'Базовий контроль стану здоров\'я для профілактики',
-            specs: regularSpecs,
-            icon: <CheckCircle2 className="w-6 h-6 md:w-8 md:h-8" />
-          },
-          {
-            value: 'individual',
-            title: 'Індивідуальна консультація',
-            description: 'Персоналізована програма або консультація вузького спеціаліста',
-            specs: null,
-            icon: <Users className="w-6 h-6 md:w-8 md:h-8" />
-          }
-        ].map((option) => (
-          <button
-            key={option.value}
-            onClick={() => setQuizData({...quizData, examType: option.value as 'full' | 'regular' | 'individual'})}
-            className={`w-full p-4 md:p-6 rounded-2xl border-3 text-left transition-all duration-300 relative ${
-              quizData.examType === option.value
-                ? 'border-blue-500 bg-blue-50 shadow-xl'
-                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 shadow-md hover:shadow-lg'
-            }`}
-          >
-            {option.popular && (
-              <div className="absolute -top-2 md:-top-3 right-3 md:right-6 bg-gradient-to-r from-orange-400 to-pink-400 text-white text-xs md:text-sm px-2 md:px-4 py-1 md:py-2 rounded-full font-semibold shadow-lg">
-                ⭐ Популярний
-              </div>
-            )}
-            
-            <div className="flex items-start gap-3 md:gap-4">
-              <div className={`p-2 md:p-3 rounded-xl flex-shrink-0 ${
-                quizData.examType === option.value 
-                  ? 'bg-blue-100 text-blue-600'
-                  : 'bg-gray-100 text-gray-600'
-              }`}>
-                {option.icon}
-              </div>
-              
-              <div className="flex-1">
-                {/* Заголовок */}
-                <h3 className="font-bold text-base md:text-xl text-gray-900 mb-1">
-                  {option.title}
-                </h3>
-                
-                {/* Опис */}
-                <p className="text-gray-600 mb-3 text-sm md:text-base leading-relaxed">
-                  {option.description}
-                </p>
-
-                {/* Характеристики (тільки для full та regular) */}
-                {option.specs ? (
-                  <>
-                    {/* Системи організму */}
-                    <div className="mb-3">
-                      <div className="space-y-1.5">
-                        {option.specs.systems.map((system, index) => (
-                          <div key={index} className="flex items-center justify-between text-xs md:text-sm">
-                            <div className="flex items-center gap-2">
-                              <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                                quizData.examType === option.value ? 'bg-blue-500' : 'bg-gray-400'
-                              }`} />
-                              <span className="text-gray-700">{system.name}</span>
-                            </div>
-                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                              system.level === 'комплексне' 
-                                ? 'bg-blue-100 text-blue-700' 
-                                : 'bg-gray-100 text-gray-600'
-                            }`}>
-                              {system.level}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Склад */}
-                    <div className="bg-gray-50 rounded-lg p-3 mb-3">
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs md:text-sm">
-                        <div className="flex items-center gap-2">
-                          <Users className="w-3 h-3 md:w-4 md:h-4 text-blue-600 flex-shrink-0" />
-                          <span className="text-gray-700 font-medium">{option.specs.doctors}</span>
-                        </div>
-                        {option.specs.uzdCount > 0 && (
-                          <div className="flex items-center gap-2">
-                            <Activity className="w-3 h-3 md:w-4 md:h-4 text-teal-600 flex-shrink-0" />
-                            <span className="text-gray-700">{option.specs.uzdCount} УЗД</span>
-                          </div>
-                        )}
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 text-green-600 flex-shrink-0" />
-                          <span className="text-gray-700">{option.specs.analysesCount} аналізів</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Рекомендація */}
-                    <div className="text-xs md:text-sm text-gray-600 bg-amber-50 px-3 py-2 rounded-lg border border-amber-100">
-                      <span className="font-semibold">Рекомендується:</span> {option.specs.recommended}
-                    </div>
-                  </>
-                ) : (
-                  /* Для індивідуальної консультації */
-                  <div className="space-y-2">
-                    <div className="text-xs md:text-sm text-gray-700">
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full" />
-                        <span>Консультація за конкретними скаргами</span>
-                      </div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full" />
-                        <span>Розширення стандартної програми</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full" />
-                        <span>Персональний підбір обстежень</span>
-                      </div>
-                    </div>
-                    <div className="text-xs md:text-sm text-gray-600 bg-purple-50 px-3 py-2 rounded-lg border border-purple-100">
-                      <span className="font-semibold">Рекомендується:</span> За медичними показаннями
-                    </div>
-                  </div>
-                )}
-
-                {/* Кнопка детальніше */}
-                {option.value !== 'individual' && programs.length > 0 && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const details = getProgramDetails(option.value as 'full' | 'regular', quizData.gender, quizData.age);
-                      if (details) {
-                        setShowProgramDetails(option.value as 'full' | 'regular');
-                      }
-                    }}
-                    className="mt-3 text-blue-600 hover:text-blue-800 font-medium text-xs md:text-sm underline"
-                  >
-                    Детальніше про склад програми →
-                  </button>
-                )}
-              </div>
-            </div>
-          </button>
-        ))}
-      </div>
-
-      <div className="flex gap-3 md:gap-4">
-        <button
-          onClick={() => setStep(1)}
-          className="flex-1 bg-gray-100 text-gray-700 py-3 md:py-4 px-4 md:px-6 rounded-xl font-semibold text-base md:text-lg hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3"
-        >
-          <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" /> Назад
-        </button>
-        <button
-          onClick={() => {
-            if (quizData.examType === 'individual') {
-              setStep(3);
-            } else {
-              calculateResult();
-            }
-          }}
-          disabled={!quizData.examType || loading}
-          className="flex-2 bg-gradient-to-r from-teal-600 to-green-600 text-white py-3 md:py-4 px-6 md:px-8 rounded-xl font-semibold text-base md:text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:from-teal-700 hover:to-green-700 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 shadow-lg"
-        >
-          {loading ? (
-            <>
-              <Loader2 className="w-5 h-5 md:w-6 md:h-6 animate-spin" />
-              <span>Рахуємо...</span>
-            </>
-          ) : (
-            <>
-              {quizData.examType === 'individual' ? 'Продовжити' : 'Розрахувати'}
-              <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
-            </>
-          )}
-        </button>
-      </div>
-    </div>
+    <Step2 
+      data={quizData}
+      onUpdate={(updates) => setQuizData(prev => ({ ...prev, ...updates }))}
+      onNext={() => {
+        if (quizData.examType === 'individual') {
+          setStep(3);
+        } else {
+          calculateResult();
+        }
+      }}
+      onBack={() => setStep(1)}
+    />
   );
 };
 
